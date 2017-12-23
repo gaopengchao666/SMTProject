@@ -11,7 +11,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 
 import cn.gpc.model.VoteTheme;
 import cn.gpc.service.VoteThemeService;
@@ -41,9 +40,8 @@ public class VoteController
      * @version 1.0
      */
     @RequestMapping("/loginSystem")
-    @ResponseBody
     public String loginSystem(String params)
     {
-        return params;
+        return "123";
     }
 }
