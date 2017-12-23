@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -32,5 +33,15 @@ public class VoteController
         List<VoteTheme> votes = voteThemeService.selectVotesByPage(params);
         model.addAttribute("votes", votes);
         return "voteManage";
+    }
+    
+    /**
+     * 登录认证
+     * @version 1.0
+     */
+    @RequestMapping("/loginSystem")
+    public String loginSystem(String params)
+    {
+        return "123";
     }
 }
