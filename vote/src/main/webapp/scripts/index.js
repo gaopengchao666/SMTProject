@@ -39,17 +39,15 @@ window.Index = (function($,module){
                 dataType: "json",
                 url: '../theme/loginSystem.action',
                 data: {
-                    params:getParams(),
+                    params:JSON.stringify(getParams())
                 },
                 success: function (data) {
                     if (data != "") {
-                        $("#pager").pager({ pagenumber: pagenumber, pagecount: data.split("$$")[1], buttonClickCallback: PageClick });
-                        $("#anhtml").html(data.split("$$")[0]);
 
                     }
                 },
                 error: function(data) {
-                    alert(data);
+                    console.log(data);
                 }
             });
             
