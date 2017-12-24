@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gpc.mapper.LoginMapper" >
+  <select id="queryUserInfo"  parameterType="String" resultType="Map">
+  <if test ='type=="user"'>
+      SELECT user_name as account,user_password as password from tbl_user_info
+  </if>
+  <if test ='type=="group"'>
+      SELECT group_name as account,group_password as password from tbl_group_info
+  </if>
+  </select>
+  <insert id="addAccount">
+  <if test ='type=="user"'>
+      INSERT INTO tbl_user_info (user_name, user_password,user_sign) VALUES (#{newAccount},#{newPass},#{newSign})
+  </if>
+  <if test ='type=="group"'>
+      INSERT INTO tbl_group_info (group_name, group_password,group_sign) VALUES (#{newAccount},#{newPass},#{newSign})
+  </if>
+  </insert>
+</mapper>
