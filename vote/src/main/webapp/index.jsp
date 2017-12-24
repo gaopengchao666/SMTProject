@@ -22,4 +22,5 @@
 <script type="text/javascript" src="scripts/jquery-3.1.1.js"></script>
 <script type="text/javascript" src="scripts/jquery-3.1.1.min.js"></script>
 <script type="text/javascript" src="scripts/index.js"></script>
+<script type="text/javascript" src="tools/simpleAlert.js"></script>
 </html>

@@ -8,20 +8,26 @@ window.Index = (function($,module){
     $("#groupLogin").click(function(){
         window.location.href="/vote/jsp/login.jsp?&type=group";
     });
+    var type = location.search.split("=")[1];
+    //记录账号信息
+    var accountInfo={};
+    //账号异常信息
+    var msg = {
+    }
     
     function init(){
+        //页面提示信息
         pageTips();
-        //点击登录
-        loginPage();
-        //点击注册
-        newUser();
+        //查询数据库中个人账号相关信息
+        queryAccuntInfo();
+        //事件绑定
+        buttonClick();
     }
     
     /**
      * 页面提示信息
      */
     function pageTips(){
-        var type = location.search.split("=")[1];
         if(type == "user")
         {
             $("#welcomeLogin").html("欢迎个人登录");
@@ -31,40 +37,145 @@ window.Index = (function($,module){
         }
     }
     
-    //登陆页面，登陆成功后进入答题系统
-    function loginPage(){
-        $("#loginSystem").click(function(){
-            $.ajax({
-                type: "get",
-                dataType: "json",
-                url: '../theme/loginSystem.action',
-                data: {
-                    params:JSON.stringify(getParams())
-                },
-                success: function (data) {
-                    if (data != "") {
-
-                    }
-                },
-                error: function(data) {
-                    console.log(data);
-                }
-            });
-            
+    //查询用户账号信息
+    function queryAccuntInfo(){
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: '../login/queryAccountInfo.action',
+            data: {
+                params:JSON.stringify(getParams(true))
+            },
+            success: function (data) {
+                accountInfo = data;
+//                if (data) {
+//                    window.location.href="/vote/jsp/login.jsp?&type="+ type;
+//                }
+//                else{
+//                    newUser();
+//                }  
+            },
+            error: function(data) {
+                console.log(data);
+            }
         });
     }
     
-     //注册账号，弹框注册，注册完成后进行登录
-    function newUser(){
+    //事件绑定
+    function buttonClick(){
+        $("#loginSystem").click(function(){
+            var curInfo = getParams(true);
+            var acc = curInfo.account;
+            var pas = curInfo.password;
+            var flag = true;
+            if(accountInfo)
+            {
+                for(var i=0;i<accountInfo.length;i++)
+                {
+                    if(acc == accountInfo[i].account && pas == accountInfo[i].password){
+                        window.location.href="/vote/jsp/login.jsp?&type="+ type;
+                        flag = false;
+                    }
+                }
+                if(flag)
+                {
+                    errorAccountInfo();
+                }
+            }
+        });
         
+        $('#newSystem').click(function(){
+            newUserDialog();
+        });
+    }
+    //账号异常弹框
+    function errorAccountInfo(msg)
+    {
+        var onlyChoseAlert = simpleAlert({
+            "title":"提示",
+            "content":"账号信息有误，请重新输入或前往注册",
+            "buttons":{
+                "确定":function () {
+                    onlyChoseAlert.close();
+                }
+            }
+        })
+    }
+     //注册账号，弹框注册，注册完成后进行登录
+    function newUserDialog(){
+        //单次双选弹框
+            var dblChoseAlert = simpleAlert({
+                "title":"注册",
+                "content":$("#newAccount").html(),
+                "buttons":{
+                    "注册":function () {
+                        newUser();
+                        dblChoseAlert.close();
+                    },
+                    "取消":function () {
+                        dblChoseAlert.close();
+                    }
+                }
+            })
     }
     
-    //获取页面相关参数
-    function getParams(){
+    //注册账号页面
+    function newUser()
+    {
+        if(accountInfo)
+        {
+            for(var i=0;i<accountInfo.length;i++)
+            {
+                if(newAccount == accountInfo[i].account){
+                    alert("用户名重复");
+                }
+            }
+        }
+//        if(getParams(false).newAccount == "" || newPass == "")
+//        {
+//            alert("注册账号为空");
+//        }
+        $.ajax({
+            type: "get",
+            dataType: "json",
+            url: '../login/addAccount.action',
+            data: {
+                params:JSON.stringify(getParams(false)),
+            },
+            success: function (data) {
+                accountInfo = data;
+//                if (data) {
+//                    window.location.href="/vote/jsp/login.jsp?&type="+ type;
+//                }
+//                else{
+//                    newUser();
+//                }  
+            },
+            error: function(data) {
+                console.log(data);
+            }
+        });
+        
+        
+    }
+    /**
+     * 获取页面相关参数
+     * @param status 登录状态
+     */
+    function getParams(status){
+        if(status){
+            return {
+                "account":$("#userName").val(),
+                "password": $("#userPass").val(),
+                "type": type,
+            };
+        }
         return {
-            "account":123456,
-            "pass" : 123
-        };
+            "newAccount" : $("#newName").val(),
+            "newPass" : $("#newPass").val(),
+            "newSign" : $("#newSign").val(),
+            "type": type,
+        }
     }
     
     module.init = init;
