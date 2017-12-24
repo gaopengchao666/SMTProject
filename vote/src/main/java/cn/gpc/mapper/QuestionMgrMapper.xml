@@ -7,17 +7,14 @@
     <result column="score" property="questionScore" jdbcType="INTEGER" />
   </resultMap>
   
-  <select id="createQuestionById" resultMap="QuestionResultMap" parameterType="java.lang.Integer" >
+  <select id="createQuestionById" resultMap="QuestionResultMap" >
     select question_id,description,score
-    from tbl_question_info
-    where question_id = #{questionId,jdbcType=INTEGER}
+    from tbl_question_info order by  RAND() limit 3
   </select>
   
-   <select id="creatAnswerById" resultType="java.lang.String" parameterType="java.lang.Integer" >
-    select item
-    from tbl_question_details
-    where question_id = #{questionId,jdbcType=INTEGER}
+   <select id="creatAnswerById" resultType="java.lang.String" parameterType="int" >
+    select item from tbl_question_details
+    where question_id = #{questionId}
   </select>
-  
-  
+
 </mapper>

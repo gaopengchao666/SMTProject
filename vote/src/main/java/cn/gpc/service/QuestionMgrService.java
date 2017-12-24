@@ -1,5 +1,7 @@
 package cn.gpc.service;
 
+import java.util.List;
+
 import cn.gpc.model.QuestionModel;
 
 /**
@@ -11,8 +13,7 @@ public interface QuestionMgrService
 {
 	/**
 	 * 页面创建题目
-	 * @param questionId 题目ID
 	 * @return 对应题目内容
 	 */
-	QuestionModel creatQuestion(int questionId);
+	List<QuestionModel> creatQuestion();
 }

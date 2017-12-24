@@ -28,18 +28,29 @@ public class QuestionMgrServiceImpl implements QuestionMgrService
 	 * 生成题目
 	 */
 	@Override
-	public QuestionModel creatQuestion(int questionId)
+	public List<QuestionModel> creatQuestion()
 	{
-		QuestionModel questionModel = new QuestionModel();
+		int questionId;
+		List<QuestionModel> questionModel = new ArrayList<QuestionModel>();
+		List<List<String>> answerListAll = new ArrayList<List<String>>();
 		List<String> answerList = new ArrayList<String>();
 		try{
-			 questionModel = questionMgrMapper.createQuestionById(questionId);
+			 questionModel = questionMgrMapper.createQuestionById();
 		}
 		catch(Exception e){
 			e.printStackTrace();
 		}
-		answerList = questionMgrMapper.creatAnswerById(questionId);
-		questionModel.setAnswerList(answerList);
+		
+		for(QuestionModel qm : questionModel)
+		{
+			questionId = qm.getQuestionId();
+			answerList = questionMgrMapper.creatAnswerById(questionId);
+			answerListAll.add(answerList);
+		}
+		for(int i = 0; i < questionModel.size(); i++)
+		{
+			questionModel.get(i).setAnswerList(answerListAll.get(i));
+		}
 		return questionModel;
 	}
 	

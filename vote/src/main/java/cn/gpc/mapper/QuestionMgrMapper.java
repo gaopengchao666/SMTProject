@@ -2,6 +2,8 @@ package cn.gpc.mapper;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import cn.gpc.model.QuestionModel;
 
 /**
@@ -9,18 +11,18 @@ import cn.gpc.model.QuestionModel;
  * @author xzz
  *
  */
+@Repository
 public interface QuestionMgrMapper
 {
 	/**
 	 * 根据题目ID生成题目
-	 * @param questionId 题目ID
 	 * @return 题目
 	 */
-	QuestionModel createQuestionById(int questionId);
+	List<QuestionModel> createQuestionById();
 	
 	/**
 	 * 根据题目ID生成答案选项
-	 * @param questionId
+	 * @param questionIdList
 	 * @return
 	 */
 	List<String> creatAnswerById(int questionId);

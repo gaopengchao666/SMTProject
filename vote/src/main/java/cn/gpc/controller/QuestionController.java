@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 
-import cn.gpc.model.QuestionModel;
 import cn.gpc.service.QuestionMgrService;
 
 /**
@@ -25,11 +24,9 @@ public class QuestionController
 	
 	@RequestMapping(value = "/createQuestion", method = RequestMethod.GET)
 	@ResponseBody
-    public String createQuestionById(int questionId)
+    public String createQuestionById()
     {
 		Gson json = new Gson();
-		QuestionModel questionModel = new QuestionModel();
-		questionModel = questionMgrService.creatQuestion(questionId);
-        return json.toJson(questionModel);
+        return json.toJson(questionMgrService.creatQuestion());
     }
 }
