@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="cn.gpc.mapper.QuestionMgrMapper" >
+  <resultMap id="QuestionResultMap" type="cn.gpc.model.QuestionModel" >
+    <result column="question_id" property="questionId" jdbcType="INTEGER" />
+    <result column="description" property="questionDesc" jdbcType="VARCHAR" />
+    <result column="score" property="questionScore" jdbcType="INTEGER" />
+  </resultMap>
+  
+  <select id="createQuestionById" resultMap="QuestionResultMap" parameterType="java.lang.Integer" >
+    select question_id,description,score
+    from tbl_question_info
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </select>
+  
+   <select id="creatAnswerById" resultType="java.lang.String" parameterType="java.lang.Integer" >
+    select item
+    from tbl_question_details
+    where question_id = #{questionId,jdbcType=INTEGER}
+  </select>
+  
+  
+</mapper>
